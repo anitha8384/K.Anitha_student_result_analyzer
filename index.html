@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Result Analyzer</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f5f9;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-top: 12px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            background: #eef6ff;
+            border-radius: 8px;
+        }
+
+        .result h2 {
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background: #e5e7eb;
+        }
+
+        .pass {
+            color: green;
+        }
+
+        .fail {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Student Result Analyzer</h1>
+
+    <label>Student Name</label>
+    <input type="text" id="name" required>
+
+    <label>Roll Number</label>
+    <input type="text" id="roll" required>
+
+    <label>Python Marks</label>
+    <input type="number" id="python" min="0" max="100" required>
+
+    <label>Java Marks</label>
+    <input type="number" id="java" min="0" max="100" required>
+
+    <label>DBMS Marks</label>
+    <input type="number" id="dbms" min="0" max="100" required>
+
+    <label>Computer Networks Marks</label>
+    <input type="number" id="cn" min="0" max="100" required>
+
+    <label>Web Technology Marks</label>
+    <input type="number" id="web" min="0" max="100" required>
+
+    <button onclick="calculateResult()">Calculate Result</button>
+
+    <div id="result"></div>
+
+</div>
+
+<script>
+function calculateResult() {
+
+    let name = document.getElementById("name").value;
+    let roll = document.getElementById("roll").value;
+
+    let python = Number(document.getElementById("python").value);
+    let java = Number(document.getElementById("java").value);
+    let dbms = Number(document.getElementById("dbms").value);
+    let cn = Number(document.getElementById("cn").value);
+    let web = Number(document.getElementById("web").value);
+
+    if (
+        name === "" ||
+        roll === "" ||
+        python === "" ||
+        java === "" ||
+        dbms === "" ||
+        cn === "" ||
+        web === ""
+    ) {
+        alert("Please enter all details.");
+        return;
+    }
+
+    let total = python + java + dbms + cn + web;
+    let percentage = total / 5;
+
+    let grade;
+
+    if (percentage >= 90) {
+        grade = "A+";
+    } else if (percentage >= 80) {
+        grade = "A";
+    } else if (percentage >= 70) {
+        grade = "B";
+    } else if (percentage >= 60) {
+        grade = "C";
+    } else if (percentage >= 50) {
+        grade = "D";
+    } else {
+        grade = "F";
+    }
+
+    let status = percentage >= 40 ? "PASS" : "FAIL";
+    let statusClass = status === "PASS" ? "pass" : "fail";
+
+    document.getElementById("result").innerHTML = `
+        <div class="result">
+
+            <h2>Result</h2>
+
+            <p><strong>Student:</strong> ${name}</p>
+
+            <p><strong>Roll Number:</strong> ${roll}</p>
+
+            <table>
+
+                <tr>
+                    <th>Subject</th>
+                    <th>Marks</th>
+                </tr>
+
+                <tr>
+                    <td>Python</td>
+                    <td>${python}</td>
+                </tr>
+
+                <tr>
+                    <td>Java</td>
+                    <td>${java}</td>
+                </tr>
+
+                <tr>
+                    <td>DBMS</td>
+                    <td>${dbms}</td>
+                </tr>
+
+                <tr>
+                    <td>Computer Networks</td>
+                    <td>${cn}</td>
+                </tr>
+
+                <tr>
+                    <td>Web Technology</td>
+                    <td>${web}</td>
+                </tr>
+
+            </table>
+
+            <h3>Total: ${total} / 500</h3>
+
+            <h3>Percentage: ${percentage.toFixed(1)}%</h3>
+
+            <h3>Grade: ${grade}</h3>
+
+            <h3 class="${statusClass}">
+                Result: ${status} ${status === "PASS" ? "✅" : "❌"}
+            </h3>
+
+        </div>
+    `;
+}
+</script>
+
+</body>
+</html>
